@@ -30,26 +30,37 @@ pipeline {
     agent any
     environment {
         cred = credentials('aws-key')
+        TF_WORKDIR = 'devops'  // Path where your main.tf is located
     }
+
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Muhilan25/udemy-test-project.git']])
             }
         }
-        stage('terraform init') {
+
+        stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                dir("${TF_WORKDIR}") {
+                    sh 'terraform init'
+                }
             }
         }
-        stage('terraform plan') {
+
+        stage('Terraform Plan') {
             steps {
-                sh 'terraform plan'
+                dir("${TF_WORKDIR}") {
+                    sh 'terraform plan'
+                }
             }
         }
-        stage('terraform apply') {
+
+        stage('Terraform Apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                dir("${TF_WORKDIR}") {
+                    sh 'terraform apply -auto-approve'
+                }
             }
         }
     }
