@@ -1,0 +1,26 @@
+// version checking pipeline
+pipeline {
+    agent any
+    stages {
+        stage('git version checking') {
+            steps {
+                sh 'git version'
+            }
+        }
+        stage('ansible version checking') {
+            steps {
+                sh 'ansible --version'
+            }
+        }
+        stage('docker version checking') {
+            steps {
+                sh 'docker version'
+            }
+        }
+        stage('terraform version checking') {
+            steps {
+                sh 'terraform version'
+            }
+        }
+    }
+}
